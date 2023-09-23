@@ -13,19 +13,20 @@ const vWindowToField = ([x, y]: SimpleVector, fieldSize: number, n: number) => {
 
 const vAdd = ([x, y]: SimpleVector, [x2, y2]: SimpleVector) => [x + x2, y + y2] as SimpleVector;
 
-export const makeParticlesAndLifetimes = (
-	w: number,
-	h: number,
-	pn: number,
-	maxLifetime: number
-) => {
+export const makeParticlesArray = (w: number, h: number, pn: number) => {
 	const particles: SimpleVector[] = [];
-	const lifetimes: number[] = [];
 	for (let i = 0; i < pn; i++) {
 		particles.push([Math.random() * w, Math.random() * h]);
+	}
+	return particles;
+};
+
+export const makeLifetimesArray = (pn: number, maxLifetime: number) => {
+	const lifetimes: number[] = [];
+	for (let i = 0; i < pn; i++) {
 		lifetimes.push(Math.round(Math.random() * maxLifetime));
 	}
-	return [particles, lifetimes] as [SimpleVector[], number[]];
+	return lifetimes;
 };
 
 export type DrawProps = {
