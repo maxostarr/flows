@@ -33,8 +33,14 @@
 	$: particles = makeParticlesArray(canvasWidth, canvasHeight, pn);
 	$: lifetimes = makeLifetimesArray(pn, maxLifetime);
 
-	$: computeFieldValue = ([x, y]: SimpleVector) =>
-		new Function(wrap(value)).call(null).call(null, [x, y]);
+	$: computeFieldValue = ([x, y]: SimpleVector) => {
+		try {
+			return new Function(wrap(value)).call(null).call(null, [x, y]);
+		} catch (e) {
+			console.error(e);
+			return [0, 0];
+		}
+	};
 
 	// $: console.log(particles);
 
