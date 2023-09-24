@@ -27,7 +27,7 @@
 
 	let n = 40;
 	let maxLifetimeSecs = 10;
-	let maxLifetime = maxLifetimeSecs * 60;
+	$: maxLifetime = maxLifetimeSecs * 60;
 	let pn = 400;
 
 	$: particles = makeParticlesArray(canvasWidth, canvasHeight, pn);
@@ -90,47 +90,84 @@
 	});
 </script>
 
-<h1>Flows</h1>
+<main class="flex w-full h-full">
+	<div class="h-full card flex flex-col">
+		<h1 class="text-3xl font-bold underline">Flows</h1>
 
-<main>
-	<div class="editor">
-		<CodeMirror bind:value lang={javascript()} />
+		<div class="flex-1">
+			<CodeMirror bind:value lang={javascript()} />
+		</div>
+
+		<aside class="card flex flex-col gap-5">
+			<div class="flex justify-between rounded-md border-solid border-2">
+				<label
+					for="divisions"
+					class="align-middle flex-1 text-center block text-sm font-medium leading-loose text-gray-900"
+					>Number of Subdivisions</label
+				>
+				<div class="relative rounded-md shadow-sm">
+					<input
+						type="text"
+						pattern="[0-9]*"
+						name="divisions"
+						id="divisions"
+						class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+						bind:value={n}
+					/>
+				</div>
+			</div>
+			<div class="flex justify-between align-middle rounded-md border-solid border-2">
+				<label
+					for="particles"
+					class="align-middle flex-1 text-center block text-sm font-medium leading-loose text-gray-900"
+					>Particles</label
+				>
+				<div class="relative rounded-md shadow-sm">
+					<input
+						type="text"
+						pattern="[0-9]*"
+						name="particles"
+						id="particles"
+						class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+						bind:value={pn}
+					/>
+				</div>
+			</div>
+			<div class="flex justify-between rounded-md border-solid border-2">
+				<label
+					for="maxLifetimeSecs"
+					class="align-middle flex-1 text-center block text-sm font-medium leading-loose text-gray-900"
+					>Max Lifetime</label
+				>
+				<div class="relative rounded-md shadow-sm">
+					<input
+						type="text"
+						pattern="[0-9]*"
+						name="maxLifetimeSecs"
+						id="maxLifetimeSecs"
+						class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+						bind:value={maxLifetimeSecs}
+					/>
+				</div>
+			</div>
+		</aside>
 	</div>
-
-	<aside class="options">
-		<label>
-			Number of Subdivisions
-			<input type="number" bind:value={n} />
-		</label>
-		<label>
-			Particles
-			<input type="number" bind:value={pn} />
-		</label>
-		<label>
-			Max Lifetime
-			<input type="number" bind:value={maxLifetimeSecs} />
-		</label>
-	</aside>
-	<canvas id="canvas" width={canvasWidth} height={canvasHeight} bind:this={canvas} />
+	<div class="flex flex-col justify-center items-center w-full h-full">
+		<canvas
+			id="canvas"
+			class="h-4/6"
+			width={canvasWidth}
+			height={canvasHeight}
+			bind:this={canvas}
+		/>
+	</div>
 </main>
 
-<style>
-	main {
-		display: flex;
-		flex-direction: row;
-	}
-
-	.editor {
-		flex: 1;
-	}
-
-	#canvas {
-		flex: 1;
-		aspect-ratio: 1;
-	}
-
-	.options {
-		display: flex;
-		flex-direction: column;
+<style lang="postcss">
+	.card {
+		background-color: theme('colors.white');
+		border-radius: theme('borderRadius.lg');
+		padding: theme('spacing.6');
+		box-shadow: theme('boxShadow.xl');
 	}
 </style>
