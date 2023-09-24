@@ -1,4 +1,4 @@
-import { ellipse, fill, noStroke, type SimpleVector } from './canvasUtils';
+import { background, ellipse, fill, noStroke, type SimpleVector } from './canvasUtils';
 
 const clamp = (x: number, min: number, max: number) => Math.min(max, Math.max(x, min));
 const vClamp = ([x, y]: SimpleVector, [min, max]: SimpleVector) => [
@@ -30,7 +30,6 @@ export const makeLifetimesArray = (pn: number, maxLifetime: number) => {
 };
 
 export type DrawProps = {
-	ctx: CanvasRenderingContext2D;
 	w: number;
 	h: number;
 	pn: number;
@@ -41,35 +40,27 @@ export type DrawProps = {
 	field: SimpleVector[][];
 };
 
-export const drawFrame = ({
-	ctx,
-	w,
-	h,
-	pn,
-	particles,
-	n,
-	field,
-	lifetimes,
-	maxLifetime
-}: DrawProps): void => {
-	// background(ctx, 0, 0, 0, 0.05, w, h);
+export const drawFrame =
+	({ w, h, pn, particles, n, field, lifetimes, maxLifetime }: DrawProps) =>
+	(ctx: CanvasRenderingContext2D) => {
+		background(ctx, 0, 0, 0, 0.05, w, h);
 
-	const fieldSize = w / n;
+		const fieldSize = w / n;
 
-	noStroke(ctx);
-	fill(ctx, 255, 255, 255, 0.05);
+		noStroke(ctx);
+		fill(ctx, 255, 255, 255, 0.5);
 
-	for (let i = 0; i < pn; i++) {
-		const p = particles[i];
-		const [fx, fy] = vWindowToField(p, fieldSize, n);
-		const fv = field[fy][fx];
-		particles[i] = vAdd(p, fv);
+		for (let i = 0; i < pn; i++) {
+			const p = particles[i];
+			const [fx, fy] = vWindowToField(p, fieldSize, n);
+			const fv = field[fy][fx];
+			particles[i] = vAdd(p, fv);
 
-		ellipse(ctx, particles[i], 1);
+			ellipse(ctx, particles[i], 1);
 
-		if (lifetimes[i]-- <= 0) {
-			particles[i] = [Math.random() * w, Math.random() * h];
-			lifetimes[i] = Math.round(Math.random() * maxLifetime);
+			if (lifetimes[i]-- <= 0) {
+				particles[i] = [Math.random() * w, Math.random() * h];
+				lifetimes[i] = Math.round(Math.random() * maxLifetime);
+			}
 		}
-	}
-};
+	};
